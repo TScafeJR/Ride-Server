@@ -6,3 +6,8 @@ We made this backend to support requests for both our React-Native application a
 
 I am going to deploy this file to Heroku. I will make it so that as we update the master branch of this server it will update the endpoints. This should make it so that we are all able to test using that endpoint. Other than that, running the file on localhost should be viable.
 
+#The Endpoint
+
+You can find the current end point here: https://the-app-ride.herokuapp.com
+
+The URL above is where we will send the fecth calls to on the frontend with the requisite routes.
