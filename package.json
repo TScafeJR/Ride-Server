@@ -1,0 +1,20 @@
+{
+  "name": "the-app-known-as-ride",
+  "version": "1.0.0",
+  "description": "An app created by Alex, Matt and Tyrone",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "test"
+  },
+  "author": "Tyrone Scafe, Jr.",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "react": "^16.2.0"
+  }
+}
