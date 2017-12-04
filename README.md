@@ -11,3 +11,7 @@ I am going to deploy this file to Heroku. I will make it so that as we update th
 You can find the current end point here: https://the-app-ride.herokuapp.com
 
 The URL above is where we will send the fecth calls to on the frontend with the requisite routes.
+
+If you visit the current app you should see "Success" which is coming from the res.send() command. 
+
+I am excited to work on this over the course of the next week. 
