@@ -1,14 +1,12 @@
 "use strict";
 
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
-    dialect: 'postgres'
-});
+var sequelize = new Sequelize(process.env.DATABASE_URI);
 
 sequelize
 .authenticate()
 .then(() => {
-    console.log('Connection has been established successfully.');
+    console.log('Connection to your database has been established successfully.');
 })
 .catch(err => {
     console.error('Unable to connect to the database:', err);
