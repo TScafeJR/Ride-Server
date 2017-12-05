@@ -24,15 +24,18 @@ var User = sequelize.define( 'users', {
   username: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
+    unique:  {
+        args: true,
+        msg: 'Username is already in use'
+        }
+    },   
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
 
 module.exports = {
     sequelize,
-    User,
+    User
 };
