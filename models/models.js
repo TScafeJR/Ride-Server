@@ -1,7 +1,7 @@
 "use strict";
 
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize(process.env.DATABASE_NAME, 'postgres', process.env.DATABASE_PASSWORD, {
+var sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
     dialect: 'postgres'
 });
 
@@ -16,7 +16,7 @@ sequelize
 
 var User = sequelize.define( 'users', {
   id: {
-    type: Sequelize.UUID,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false
@@ -24,10 +24,7 @@ var User = sequelize.define( 'users', {
   username: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique:  {
-        args: true,
-        msg: 'Username is already in use'
-        }
+    unique:  true
     },   
     password: {
         type: Sequelize.STRING,

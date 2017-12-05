@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "postinstall": "node sync.js",
     "test": "test"
   },
   "author": "Tyrone Scafe, Jr.",
