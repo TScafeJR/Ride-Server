@@ -39,16 +39,20 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-    const saltRounds = 10;
-    const hash = bcrypt.hashSync(password, saltRounds);
-    User.findOne({ where: { username: username }}).then(user => {
-        if (bcrypt.compareSync(password, hash)) {
-            console.log(`hash worked`)
-            done(null, user);
-        } else {
-            done(null, false);
-        }
-    });
+    User.findOne({ where: { username: username }})
+    .then(user => {
+        bcrypt.compare(password, user.password, function(err, res){
+            if (res){
+                done(null, user);
+            } else {
+                console.log(`The hash did not work for you \n ${err}`);
+                done(null, false);
+            }
+        })
+    })
+    .catch(function(error){
+        console.log(`There was an error with the Local Strategy\n ${error}`);
+    })
 }));
 
 /*
@@ -57,15 +61,13 @@ I put everything in the same file because this server file doesn't need extreme 
 */
 //to hash the file
 
-
-
-
 app.post('/register', function(req, res, next) {
     const saltRounds = 10;
 
-    const hash = bcrypt.hashSync(req.body.password, saltRounds);
-
-    User.create({username: req.body.username, password: hash})
+    bcrypt.hash(req.body.password, saltRounds)
+    .then(function(hash) {
+        return User.create({username: req.body.username, password: hash})
+    })
     .then(function() {
         return User.findAll();
     })
@@ -74,8 +76,10 @@ app.post('/register', function(req, res, next) {
     //   res.redirect('/login');
     })
     .catch(function(error) {
-      console.log(error)
+      console.log(`There was an error registering the User\n ${error}`)
     });
+
+   
 });
 
 app.post('/login', passport.authenticate('local', {
