@@ -30,7 +30,7 @@ var User = sequelize.define( 'users', {
     },
     email: {
         type    : Sequelize.TEXT,
-        isUnique :true,
+        unique :true,
         allowNull:false,
         validate:{
             isEmail : true
