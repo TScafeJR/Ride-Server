@@ -13,20 +13,28 @@ sequelize
 });
 
 var User = sequelize.define( 'users', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false
-  },
-  username: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique:  true
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    username: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique:  true
     },   
     password: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    email: {
+        type    : Sequelize.TEXT,
+        isUnique :true,
+        allowNull:false,
+        validate:{
+            isEmail : true
+        }
     }
 })
 

@@ -60,19 +60,38 @@ I put everything in the same file because this server file doesn't need extreme 
 */
 //to hash the file
 
+var validateReq = function(userData) {
+    if (userData.password !== userData.passwordRepeat) {
+      return "Passwords don't match.";
+    }
+
+    if (!userData.username) {
+      return "Please enter a username.";
+    }
+
+    if (!userData.password) {
+      return "Please enter a password.";
+    }
+};
+
 app.post('/register', function(req, res, next) {
+    var error = validateReq(req.body);
+    if (error) {
+      res.json({error: error})
+    }
+
     const saltRounds = 10;
 
     bcrypt.hash(req.body.password, saltRounds)
     .then(function(hash) {
-        return User.create({username: req.body.username, password: hash})
+        return User.create({username: req.body.username, password: hash, email: req.body.email})
     })
     .then(function() {
         return User.findAll();
     })
     .then(function() {
-      return console.log('user registered')
-    //   res.redirect('/login');
+        console.log('user registered')
+        return res.json({success: true})
     })
     .catch(function(error) {
       console.log(`There was an error registering the User\n ${error}`)
@@ -96,7 +115,7 @@ Everything below this page is for the routes to this file
 If this file exceeds about 500 lines of code then I will segment it to make it more manageable
 */
 app.get('/', (req, res) => {
-    res.send(`Success!`)
+    return res.json({success: true})    
 });
 
 app.get('/second', function(req, res) {
