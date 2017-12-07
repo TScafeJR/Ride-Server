@@ -118,10 +118,21 @@ app.get('/', (req, res) => {
     return res.json({success: true})    
 });
 
-app.post('/fbupdate', (req, res){
+app.post('/fbupdate', (req, res) => {
     User.update({
         facebookID: req.body.facebookID,
-        facebookName: facebookName
+        facebookName: req.body.facebookName
+    }, {
+        where: {id: req.user.id},
+        returning: true,
+        plain: true
+    })
+    .then(function(result){
+        console.log(result[1].dataValues)
+        res.send({success: true})
+    })
+    .catch(function(error){
+        console.log(`There was an error updating the facebook model\n ${error}`)
     })
 })
 
