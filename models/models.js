@@ -29,12 +29,21 @@ var User = sequelize.define( 'users', {
         allowNull: false
     },
     email: {
-        type    : Sequelize.TEXT,
-        unique :true,
-        allowNull:false,
-        validate:{
-            isEmail : true
+        type: Sequelize.TEXT,
+        unique: true,
+        allowNull: false,
+        validate: {
+            isEmail: true
         }
+    },
+    facebookName: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    facebookID: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        unique: true
     }
 })
 

@@ -118,6 +118,13 @@ app.get('/', (req, res) => {
     return res.json({success: true})    
 });
 
+app.post('/fbupdate', (req, res){
+    User.update({
+        facebookID: req.body.facebookID,
+        facebookName: facebookName
+    })
+})
+
 app.get('/second', function(req, res) {
     res.send(`This works!`)
 });
