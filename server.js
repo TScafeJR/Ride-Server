@@ -141,6 +141,7 @@ app.post('/fbupdate', (req, res) => {
     })
     .catch(function(error){
         console.log(`There was an error updating the facebook model\n ${error}`)
+        res.send({success:false})
     })
 })
 
