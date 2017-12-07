@@ -15,7 +15,7 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
 /*
-My passport strategy is below 
+My passport strategy is below
 */
 
 var passport = require('passport');
@@ -40,6 +40,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new LocalStrategy(function(username, password, done) {
     User.findOne({ where: { username: username }})
     .then(user => {
+      if(user) {
         bcrypt.compare(password, user.password, function(err, res){
             if (res){
                 done(null, user);
@@ -47,7 +48,10 @@ passport.use(new LocalStrategy(function(username, password, done) {
                 console.log(`The hash did not work for you \n ${err}`);
                 done(null, false);
             }
-        })
+        });
+      } else {
+        done(null, false);
+      }
     })
     .catch(function(error){
         console.log(`There was an error with the Local Strategy\n ${error}`);
@@ -97,13 +101,17 @@ app.post('/register', function(req, res, next) {
       console.log(`There was an error registering the User\n ${error}`)
     });
 
-   
+
 });
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login'
+    failureRedirect: '/loginFail'
 }));
+
+app.get('/loginFail', (req, res) => {
+  return res.json({success: false});
+});
 
 app.get('/logout', function(req, res) {
     req.logout();
@@ -115,7 +123,7 @@ Everything below this page is for the routes to this file
 If this file exceeds about 500 lines of code then I will segment it to make it more manageable
 */
 app.get('/', (req, res) => {
-    return res.json({success: true})    
+    return res.json({success: true})
 });
 
 app.post('/fbupdate', (req, res) => {
