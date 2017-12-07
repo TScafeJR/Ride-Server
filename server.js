@@ -40,6 +40,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new LocalStrategy(function(username, password, done) {
     User.findOne({ where: { username: username }})
     .then(user => {
+      if(user) {
         bcrypt.compare(password, user.password, function(err, res){
             if (res){
                 done(null, user);
@@ -47,7 +48,10 @@ passport.use(new LocalStrategy(function(username, password, done) {
                 console.log(`The hash did not work for you \n ${err}`);
                 done(null, false);
             }
-        })
+        });
+      } else {
+        done(null, false);
+      }
     })
     .catch(function(error){
         console.log(`There was an error with the Local Strategy\n ${error}`);
