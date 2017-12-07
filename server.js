@@ -15,7 +15,7 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
 /*
-My passport strategy is below 
+My passport strategy is below
 */
 
 var passport = require('passport');
@@ -97,13 +97,17 @@ app.post('/register', function(req, res, next) {
       console.log(`There was an error registering the User\n ${error}`)
     });
 
-   
+
 });
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login'
+    failureRedirect: '/loginFail'
 }));
+
+app.get('/loginFail', (req, res) => {
+  return res.json({success: false});
+});
 
 app.get('/logout', function(req, res) {
     req.logout();
@@ -115,7 +119,7 @@ Everything below this page is for the routes to this file
 If this file exceeds about 500 lines of code then I will segment it to make it more manageable
 */
 app.get('/', (req, res) => {
-    return res.json({success: true})    
+    return res.json({success: true})
 });
 
 app.post('/fbupdate', (req, res) => {
