@@ -38,7 +38,8 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-    User.findOne({ where: { username: username }})
+    var uname = username.toLowerCase()
+    User.findOne({ where: { username: uname }})
     .then(user => {
       if(user) {
         bcrypt.compare(password, user.password, function(err, res){
@@ -88,7 +89,8 @@ app.post('/register', function(req, res, next) {
 
     bcrypt.hash(req.body.password, saltRounds)
     .then(function(hash) {
-        return User.create({username: req.body.username, password: hash, email: req.body.email})
+        var uname = req.body.username.toLowerCase()
+        return User.create({username: uname, password: hash, email: req.body.email})
     })
     .then(function() {
         return User.findAll();
