@@ -149,6 +149,12 @@ app.get('/second', function(req, res) {
     res.send(`This works!`)
 });
 
+app.get('/logout', function(req, res) {
+    req.logout()
+    res.json({success: true})
+
+})
+
 app.listen(PORT, error => {
     error
     ? console.error(error)
