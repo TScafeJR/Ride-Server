@@ -147,6 +147,23 @@ app.post('/fbupdate', (req, res) => {
     })
 })
 
+app.post('/photoUpdate', (req, res) => {
+    User.update({
+        profile_URL: req.body.profileURL
+    }, {
+        where: {id: req.user.id},
+        returning: true,
+        plain: true
+    })
+    .then(function(result){
+        res.send({success: true})
+    })
+    .catch(function(error){
+        console.log(`There was an error updating the User's profile photo\n ${error}`)
+        res.send({success: false})
+    })
+})
+
 app.get('/second', function(req, res) {
     res.send(`This works!`)
 });

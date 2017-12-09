@@ -44,6 +44,10 @@ var User = sequelize.define( 'users', {
         type: Sequelize.INTEGER,
         allowNull: true,
         unique: true
+    },
+    profile_URL: {
+        type: Sequelize.TEXT,
+        allowNull: true
     }
 })
 
