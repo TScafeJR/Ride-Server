@@ -156,6 +156,7 @@ app.post('/photoUpdate', (req, res) => {
         plain: true
     })
     .then(function(result){
+        console.log(result)
         res.send({success: true})
     })
     .catch(function(error){
