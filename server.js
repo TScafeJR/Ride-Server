@@ -149,7 +149,7 @@ app.post('/fbupdate', (req, res) => {
 
 app.post('/photoUpdate', (req, res) => {
     console.log(`User ID\n${req.user.id}`);
-    console.log(`Profile Url\n${req.body.profileURL}`);
+    console.log(`Profile Url\n${JSON.stringify(req.body.profileURL)}`);
     
     User.update({
         profile_URL: req.body.profileURL
