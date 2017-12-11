@@ -44,7 +44,6 @@ passport.use(new LocalStrategy(function(username, password, done) {
       if(user) {
         bcrypt.compare(password, user.password, function(err, res){
             if (res){
-                console.log(`user ${user.id}`);
                 done(null, user);
             } else {
                 console.log(`The hash did not work for you \n ${err}`);
@@ -149,6 +148,9 @@ app.post('/fbupdate', (req, res) => {
 })
 
 app.post('/photoUpdate', (req, res) => {
+    console.log(`User ID\n${req.user.id}`);
+    console.log(`Profile Url\n${req.body}`);
+    
     User.update({
         profile_URL: req.body.profileURL
     }, {
