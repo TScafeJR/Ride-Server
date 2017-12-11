@@ -44,6 +44,8 @@ passport.use(new LocalStrategy(function(username, password, done) {
       if(user) {
         bcrypt.compare(password, user.password, function(err, res){
             if (res){
+                console.log(`user ${user}`);
+                console.log(`res ${res}`);
                 done(null, user);
             } else {
                 console.log(`The hash did not work for you \n ${err}`);
