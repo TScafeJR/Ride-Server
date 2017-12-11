@@ -169,6 +169,10 @@ app.post('/photoUpdate', (req, res) => {
     })
 })
 
+app.get('/profileImage', (req, res) {
+    res.send({success: true, photo: req.user.profile_URL})
+})
+
 app.get('/second', function(req, res) {
     res.send(`This works!`)
 });
