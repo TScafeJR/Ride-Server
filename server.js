@@ -90,7 +90,7 @@ app.post('/register', function(req, res, next) {
     bcrypt.hash(req.body.password, saltRounds)
     .then(function(hash) {
         var uname = req.body.username.toLowerCase()
-        return User.create({username: uname, password: hash, email: req.body.email})
+        return User.create({username: uname, password: hash, email: req.body.email, profile_URL: 'http://bit.ly/2AuipjI'})
     })
     .then(function() {
         return User.findAll();
