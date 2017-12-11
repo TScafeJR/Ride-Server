@@ -148,9 +148,6 @@ app.post('/fbupdate', (req, res) => {
 })
 
 app.post('/photoUpdate', (req, res) => {
-    console.log(`User ID\n${req.user.id}`);
-    console.log(`Profile Url\n${JSON.stringify(req.body)}`);
-    
     User.update({
         profile_URL: req.body.profileURL
     }, {
@@ -159,8 +156,6 @@ app.post('/photoUpdate', (req, res) => {
         plain: true
     })
     .then(function(result){
-        console.log(`result\n${result}`)
-        console.log(`Req.user, ${req.user}`)
         res.send({success: true})
     })
     .catch(function(error){
@@ -169,7 +164,7 @@ app.post('/photoUpdate', (req, res) => {
     })
 })
 
-app.get('/profileImage', (req, res) {
+app.get('/profileImage', (req, res) => {
     res.send({success: true, photo: req.user.profile_URL})
 })
 
