@@ -181,5 +181,5 @@ app.get('/logout', function(req, res) {
 app.listen(PORT, error => {
     error
     ? console.error(error)
-    : console.info(`==> 🌎 Listening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
+    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
 });
