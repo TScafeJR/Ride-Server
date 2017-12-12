@@ -5,6 +5,8 @@ const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 var User = require('./models/models.js').User;
 var bcrypt = require('bcrypt');
+var Spotify = require('./spotify.js').spotifyApi;
+var SpotifyUrl = require('./spotify.js').authorizeURL
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -162,6 +164,66 @@ app.post('/photoUpdate', (req, res) => {
         console.log(`There was an error updating the User's profile photo\n ${error}`)
         res.send({success: false})
     })
+})
+
+var code;
+
+app.post('/spotifyUpdate', (req, res) => {
+    fetch(`${SpotifyUrl}`, {
+        method: 'GET'
+    })
+    .then((response) =>{
+        console.log(`This is the response. hopefully it is the code`)
+    })
+    .catch((error)=>{
+        console.log(`There was an error submitting the Spotify query to authenticate the user.\n
+        Find more information below\n
+        ${error}`)
+    })
+})
+
+app.get('/spotify-success', (req, res) => {
+// need to get the query stuff correct
+
+// fetch(`https://accounts.spotify.com/api/token`, {
+//     method: 'POST',
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({
+//       grant_type: "authorization_code",
+//       code: password,
+//       redirect_uri: 'https://the-app-ride.herokuapp.com/spotify-success',
+//       client_id: process.env.SPOTIFY_CLIENT_ID,
+//       client_secret: process.env.SPOTIFY_CLIENT_SECRET
+//     })
+//   })
+//   .then((response) => {
+//     console.log('response', response);
+//     return response.json();
+//   })
+//   .then((responseJson) => {
+//       console.log(`This is responseJson\n ${responseJson}`)
+//   })
+//   .catch((error)=>{
+//     console.log(`There was an error making the request to the spotify API with your credentials to authenticate the user.\n
+//     Find more information below\n
+//     ${error}`)
+//     })
+
+    Spotify.authorizationCodeGrant(code)
+    .then(function(data) {
+    console.log('The token expires in ' + data.body['expires_in']);
+    console.log('The access token is ' + data.body['access_token']);
+    console.log('The refresh token is ' + data.body['refresh_token']);
+
+    // Set the access token on the API object to use it in later calls
+    Spotify.setAccessToken(data.body['access_token']);
+    Spotify.setRefreshToken(data.body['refresh_token']);
+    })
+    .catch( (err) => {
+    console.log('Something went wrong!', err);
+    });
 })
 
 app.get('/profileImage', (req, res) => {
