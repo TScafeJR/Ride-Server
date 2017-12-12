@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 var User = require('./models/models.js').User;
 var bcrypt = require('bcrypt');
 var Spotify = require('./spotify.js').spotifyApi;
-var SpotifyUrl = require('./spotify.js').authorizeURL
+var SpotifyUrl = require('./spotify.js').authorizeURL;
+var axios = require('axios');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -170,9 +171,7 @@ var code;
 
 app.post('/spotifyUpdate', (req, res) => {
     console.log(`${SpotifyUrl}`)
-    fetch(`${SpotifyUrl}`, {
-        method: 'GET'
-    })
+    axios.get(`${SpotifyUrl}`)
     .then((response) =>{
         console.log(`This is the response. hopefully it is the code\n ${response}`)
     })
