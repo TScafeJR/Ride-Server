@@ -169,11 +169,12 @@ app.post('/photoUpdate', (req, res) => {
 var code;
 
 app.post('/spotifyUpdate', (req, res) => {
+    console.log(`${SpotifyUrl}`)
     fetch(`${SpotifyUrl}`, {
         method: 'GET'
     })
     .then((response) =>{
-        console.log(`This is the response. hopefully it is the code`)
+        console.log(`This is the response. hopefully it is the code\n ${response}`)
     })
     .catch((error)=>{
         console.log(`There was an error submitting the Spotify query to authenticate the user.\n
