@@ -173,7 +173,7 @@ app.post('/spotifyUpdate', (req, res) => {
     console.log(`${SpotifyUrl}`)
     axios.get(`${SpotifyUrl}`)
     .then((response) =>{
-        console.log(`This is the response. hopefully it is the code\n ${response}`)
+        console.log(`This is the response. hopefully it is the code\n ${JSON.stringify(response)}`)
     })
     .catch((error)=>{
         console.log(`There was an error submitting the Spotify query to authenticate the user.\n
