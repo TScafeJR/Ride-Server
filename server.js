@@ -169,11 +169,12 @@ app.post('/photoUpdate', (req, res) => {
 
 var code;
 
-app.post('/spotifyUpdate', (req, res) => {
+app.get('/spotifyUpdate', (req, res) => {
     console.log(`${SpotifyUrl}`)
     axios.get(`${SpotifyUrl}`)
     .then((response) =>{
-        console.log(`This is the response. hopefully it is the code\n ${JSON.stringify(response)}`)
+        console.log(`Hit the spotify route`)
+        res.json({url: SpotifyUrl} )
     })
     .catch((error)=>{
         console.log(`There was an error submitting the Spotify query to authenticate the user.\n

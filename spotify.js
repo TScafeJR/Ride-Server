@@ -3,7 +3,7 @@
 var SpotifyWebApi = require('spotify-web-api-node');
 
 var scopes = ['user-read-private', 'user-read-email'];
-var redirectUri = 'https://the-app-ride.herokuapp.com/spotify-success';
+var redirectUri = 'https://19f7b9a2.ngrok.io/spotify-success'//'https://the-app-ride.herokuapp.com/spotify-success';
 var clientId = process.env.SPOTIFY_CLIENT_ID;
 var state = '1996m15wed';
 
