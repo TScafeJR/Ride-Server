@@ -204,6 +204,17 @@ app.post('/photoUpdate', (req, res) => {
     })
 })
 
+app.get('/yourCar', (req, res) => {
+    Car.findOne({ where: { userId: req.user.id }})
+    .then((response) =>{
+        console.log(response)
+        res.send({car: response});
+    })
+    .catch((error) => {
+        console.log(`There was an error with your car\n${error}`)
+    })
+})
+
 app.post('/carPhotoUpdate', (req, res)=>{
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
@@ -247,7 +258,8 @@ app.post('/carUpdate', (req, res) => {
                 license_plate: req.body.licensePlate,
                 make: req.body.make,
                 model: req.body.model,
-                year: req.body.year
+                year: req.body.year,
+                color: req.body.color
             })
             .then((response)=>{
                 console.log(`Car updated`)
@@ -261,7 +273,8 @@ app.post('/carUpdate', (req, res) => {
                 make: req.body.make,
                 model: req.body.model,
                 year: req.body.year,
-                userId: req.user.id
+                userId: req.user.id,
+                color: req.body.color
             })
             .then((response)=>{
                 console.log(`Car model created`)
@@ -281,11 +294,16 @@ app.post('/carUpdate', (req, res) => {
 })
 
 app.post('/profileUpdate', (req, res) => {
+    var d = new Date();
+    var dd = parseInt(`${req.body.day}`);
+    var mm = parseInt(`${req.body.month}`) - 1;
+    var yy = parseInt(`${req.body.year}`);
+    d.setFullYear(yy, mm, dd)
     User.update({
         profile_URL: req.body.image,
         first_name: req.body.firstName,
         last_name: req.body.lastName,
-        birthday: `${req.body.day}/${req.body.month}/${req.body.year}`,
+        birthday: d,
         bio: req.body.bio,
         hometown: req.body.hometown
     }, {

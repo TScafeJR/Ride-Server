@@ -99,6 +99,10 @@ var Car = sequelize.define( 'cars', {
     year: {
         type: Sequelize.INTEGER,
         allowNull: true
+    },
+    color: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     }
 })
 
