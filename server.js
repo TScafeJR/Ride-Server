@@ -204,16 +204,50 @@ app.post('/photoUpdate', (req, res) => {
     })
 })
 
+app.post('/carPhotoUpdate', (req, res){
+    Car.findOne({ where: { userId: req.user.id }})
+    .then((response) =>{
+        if (response){
+            Car.update({
+                image: req.body.image
+            })
+            .then((response)=>{
+                console.log(`Car photo updated`)
+            })
+            .catch((error) =>{
+                console.log(`There was an error updating the car photo\n${error}`)
+            })
+        } else {
+            Car.create({
+                image: req.body.image,
+                userId: req.user.id
+            })
+            .then((response)=>{
+                console.log(`Car photo created`)
+            })
+            .catch((error) =>{
+                console.log(`There was an error creating the car photo\n${error}`)
+            })
+        }
+    })
+    .then((submission) => {
+        res.json({success: true})
+    })
+    .catch((error) => {
+        console.log(`There was an error authenticating the Car model\n${error}`)
+        res.json({success: false})
+    })
+})
+
 app.post('/carUpdate', (req, res) => {
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
         if (response){
             Car.update({
-                image: req.body.profileURL,
-                license_plate: req.body.license_plate,
+                license_plate: req.body.licensePlate,
                 make: req.body.make,
                 model: req.body.model,
-                year: req.body.year,
+                year: req.body.year
             })
             .then((response)=>{
                 console.log(`Car updated`)
@@ -223,8 +257,7 @@ app.post('/carUpdate', (req, res) => {
             })
         } else {
             Car.create({
-                image: req.body.profileURL,
-                license_plate: req.body.license_plate,
+                license_plate: req.body.licensePlate,
                 make: req.body.make,
                 model: req.body.model,
                 year: req.body.year,
@@ -285,12 +318,20 @@ app.get('/spotifyUpdate', (req, res) => {
 
 })
 
-app.get('/spotify-success', (req, res) => {
-
-})
-
 app.get('/profileImage', (req, res) => {
     res.send({success: true, photo: req.user.profile_URL})
+})
+
+app.get('/profile', (req, res) => {
+    res.send({
+        success: true,
+        photo: req.user.profile_URL,
+        first_name: req.user.firstName,
+        last_name: req.user.lastName,
+        bithday: req.user.birthday,
+        hometown: req.user.hometown
+        bio: req.user.bio
+    })
 })
 
 app.get('/second', function(req, res) {
