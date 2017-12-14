@@ -4,6 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 var User = require('./models/models.js').User;
+var Car = require('./models/models.js').Car;
 var bcrypt = require('bcrypt');
 var axios = require('axios');
 
@@ -207,8 +208,11 @@ app.post('/photoUpdate', (req, res) => {
 app.get('/yourCar', (req, res) => {
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
+        if(response){
+            res.send({car: response});
+        }
         console.log(response)
-        res.send({car: response});
+        return
     })
     .catch((error) => {
         console.log(`There was an error with your car\n${error}`)
