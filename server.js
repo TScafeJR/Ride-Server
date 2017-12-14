@@ -225,6 +225,10 @@ app.post('/carPhotoUpdate', (req, res)=>{
         if (response){
             Car.update({
                 image: req.body.image
+            }, {
+                where: {userId: req.user.id},
+                returning: true,
+                plain: true
             })
             .then((response)=>{
                 console.log(`Car photo updated`)
@@ -264,6 +268,10 @@ app.post('/carUpdate', (req, res) => {
                 model: req.body.model,
                 year: req.body.year,
                 color: req.body.color
+            }, {
+                where: {userId: req.user.id},
+                returning: true,
+                plain: true
             })
             .then((response)=>{
                 console.log(`Car updated`)
