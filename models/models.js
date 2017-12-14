@@ -36,6 +36,26 @@ var User = sequelize.define( 'users', {
             isEmail: true
         }
     },
+    first_name: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    last_name: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    birthday: {
+        type: Sequelize.DATE,
+        allowNull: true
+    },
+    bio: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    hometown: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
     facebookName: {
         type: Sequelize.TEXT,
         allowNull: true

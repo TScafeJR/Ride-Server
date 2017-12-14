@@ -215,6 +215,12 @@ app.post('/carUpdate', (req, res) => {
                 model: req.body.model,
                 year: req.body.year,
             })
+            .then((response)=>{
+                console.log(`Car updated`)
+            })
+            .catch((error) =>{
+                console.log(`There was an error updating the car model\n${error}`)
+            })
         } else {
             Car.create({
                 image: req.body.profileURL,
@@ -224,6 +230,12 @@ app.post('/carUpdate', (req, res) => {
                 year: req.body.year,
                 userId: req.user.id
             })
+            .then((response)=>{
+                console.log(`Car model created`)
+            })
+            .catch((error) =>{
+                console.log(`There was an error creating the car model\n${error}`)
+            })
         }
     })
     .then((submission) => {
@@ -232,6 +244,28 @@ app.post('/carUpdate', (req, res) => {
     .catch((error) => {
         console.log(`There was an error authenticating the Car model\n${error}`)
         res.json({success: false})
+    })
+})
+
+app.post('/profileUpdate', (req, res) => {
+    User.update({
+        profile_URL: req.body.image,
+        first_name: req.body.firstName,
+        last_name: req.body.lastName,
+        birthday: `${req.body.day}/${req.body.month}/${req.body.year}`,
+        bio: req.body.bio,
+        hometown: req.body.hometown
+    }, {
+        where: {id: req.user.id},
+        returning: true,
+        plain: true
+    })
+    .then(function(result){
+        res.send({success: true})
+    })
+    .catch(function(error){
+        console.log(`There was an error updating the User's Profile\n${error}`)
+        res.send({success: false})
     })
 })
 
