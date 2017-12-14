@@ -101,7 +101,7 @@ var Car = sequelize.define( 'cars', {
         allowNull: true
     },
     color: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         allowNull: true
     }
 })
