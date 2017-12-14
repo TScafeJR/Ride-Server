@@ -209,13 +209,14 @@ app.get('/yourCar', (req, res) => {
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
         if(response){
-            res.send({car: response});
+            res.send({success: true, car: response});
         }
         console.log(response)
         return
     })
     .catch((error) => {
         console.log(`There was an error with your car\n${error}`)
+        res.send({success: false})
     })
 })
 
@@ -261,6 +262,7 @@ app.post('/carPhotoUpdate', (req, res)=>{
 app.post('/carUpdate', (req, res) => {
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
+        console.log(`This is the test response\n${response}`)
         if (response){
             Car.update({
                 license_plate: req.body.licensePlate,
