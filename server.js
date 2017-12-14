@@ -358,9 +358,9 @@ app.get('/profile', (req, res) => {
     res.send({
         success: true,
         photo: req.user.profile_URL,
-        first_name: req.user.firstName,
-        last_name: req.user.lastName,
-        bithday: req.user.birthday,
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        birthday: req.user.birthday,
         hometown: req.user.hometown,
         bio: req.user.bio
     })
