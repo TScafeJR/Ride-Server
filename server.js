@@ -5,16 +5,15 @@ const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 var User = require('./models/models.js').User;
 var bcrypt = require('bcrypt');
-var Spotify = require('./spotify.js').spotifyApi;
-var SpotifyUrl = require('./spotify.js').authorizeURL;
 var axios = require('axios');
 
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('cookie-parser')());
-// app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
 /*
@@ -23,6 +22,7 @@ My passport strategy is below
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
+const SpotifyStrategy = require('passport-spotify').Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -61,6 +61,43 @@ passport.use(new LocalStrategy(function(username, password, done) {
         console.log(`There was an error with the Local Strategy\n ${error}`);
     })
 }));
+
+    passport.use(new SpotifyStrategy({
+        clientID: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        callbackURL: "https://the-app-ride.herokuapp.com/spotify-success"
+    },
+    function(accessToken, refreshToken, profile, done) {
+        var access = accessToken;
+        User.findOne({
+            spotifyId: profile.id
+        }, function(err, user) {
+        if (err) {return done(err);}
+    //No user was found... so create a new user with values from Facebook (all the profile. stuff)
+        if (!user) {
+            user = new User({
+                username: profile.displayName,
+                profilePhoto: profile.photos[0],
+                access: access,
+                spotifyId: profile.id,
+                provider: 'spotify',
+                //now in the future searching on User.findOne({'facebook.id': profile.id } will match because of this next line
+                });
+                user.save(function(err) {
+                    if (err) console.log(err);
+                    return done(err, user);
+                });
+            } else {
+                //found user. Return
+                user.access = access;
+                user.save(function(err){
+                if(err) console.log(err);
+                return done(err, user);
+                })
+            }
+    });
+    })
+    )
 
 /*
 The login routes are below here
@@ -170,61 +207,23 @@ app.post('/photoUpdate', (req, res) => {
 var code;
 
 app.get('/spotifyUpdate', (req, res) => {
-    console.log(`${SpotifyUrl}`)
-    axios.get(`${SpotifyUrl}`)
-    .then((response) =>{
-        console.log(`Hit the spotify route`)
-        res.json({url: SpotifyUrl} )
-    })
-    .catch((error)=>{
-        console.log(`There was an error submitting the Spotify query to authenticate the user.\n
-        Find more information below\n
-        ${error}`)
-    })
+    // console.log(`${SpotifyUrl}`)
+    // axios.get(`${SpotifyUrl}`)
+    // .then((response) =>{
+    //     console.log(`Hit the spotify route`)
+    //     res.json({url: SpotifyUrl} )
+    // })
+    // .catch((error)=>{
+    //     console.log(`There was an error submitting the Spotify query to authenticate the user.\n
+    //     Find more information below\n
+    //     ${error}`)
+    // })
+
+
 })
 
 app.get('/spotify-success', (req, res) => {
-// need to get the query stuff correct
 
-// fetch(`https://accounts.spotify.com/api/token`, {
-//     method: 'POST',
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify({
-//       grant_type: "authorization_code",
-//       code: password,
-//       redirect_uri: 'https://the-app-ride.herokuapp.com/spotify-success',
-//       client_id: process.env.SPOTIFY_CLIENT_ID,
-//       client_secret: process.env.SPOTIFY_CLIENT_SECRET
-//     })
-//   })
-//   .then((response) => {
-//     console.log('response', response);
-//     return response.json();
-//   })
-//   .then((responseJson) => {
-//       console.log(`This is responseJson\n ${responseJson}`)
-//   })
-//   .catch((error)=>{
-//     console.log(`There was an error making the request to the spotify API with your credentials to authenticate the user.\n
-//     Find more information below\n
-//     ${error}`)
-//     })
-
-    Spotify.authorizationCodeGrant(code)
-    .then(function(data) {
-    console.log('The token expires in ' + data.body['expires_in']);
-    console.log('The access token is ' + data.body['access_token']);
-    console.log('The refresh token is ' + data.body['refresh_token']);
-
-    // Set the access token on the API object to use it in later calls
-    Spotify.setAccessToken(data.body['access_token']);
-    Spotify.setRefreshToken(data.body['refresh_token']);
-    })
-    .catch( (err) => {
-    console.log('Something went wrong!', err);
-    });
 })
 
 app.get('/profileImage', (req, res) => {
