@@ -204,7 +204,36 @@ app.post('/photoUpdate', (req, res) => {
     })
 })
 
-var code;
+app.post('/carUpdate', (req, res) => {
+    Car.findOne({ where: { userId: req.user.id }})
+    .then((response) =>{
+        if (response){
+            Car.update({
+                image: req.body.profileURL,
+                license_plate: req.body.license_plate,
+                make: req.body.make,
+                model: req.body.model,
+                year: req.body.year,
+            })
+        } else {
+            Car.create({
+                image: req.body.profileURL,
+                license_plate: req.body.license_plate,
+                make: req.body.make,
+                model: req.body.model,
+                year: req.body.year,
+                userId: req.user.id
+            })
+        }
+    })
+    .then((submission) => {
+        res.json({success: true})
+    })
+    .catch((error) => {
+        console.log(`There was an error authenticating the Car model\n${error}`)
+        res.json({success: false})
+    })
+})
 
 app.get('/spotifyUpdate', (req, res) => {
     // console.log(`${SpotifyUrl}`)

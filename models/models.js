@@ -51,7 +51,41 @@ var User = sequelize.define( 'users', {
     }
 })
 
+var Car = sequelize.define( 'cars', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    image: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+        unique: true
+    },
+    license_plate: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+        unique: true
+    },
+    make: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    model: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    year: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    }
+})
+
+Car.belongsTo(User)
+
 module.exports = {
     sequelize,
-    User
+    User,
+    Car
 };
