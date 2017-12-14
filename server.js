@@ -204,7 +204,7 @@ app.post('/photoUpdate', (req, res) => {
     })
 })
 
-app.post('/carPhotoUpdate', (req, res){
+app.post('/carPhotoUpdate', (req, res)=>{
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
         if (response){
@@ -329,7 +329,7 @@ app.get('/profile', (req, res) => {
         first_name: req.user.firstName,
         last_name: req.user.lastName,
         bithday: req.user.birthday,
-        hometown: req.user.hometown
+        hometown: req.user.hometown,
         bio: req.user.bio
     })
 })
