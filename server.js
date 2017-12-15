@@ -362,7 +362,8 @@ app.get('/profile', (req, res) => {
         last_name: req.user.last_name,
         birthday: req.user.birthday,
         hometown: req.user.hometown,
-        bio: req.user.bio
+        bio: req.user.bio,
+        id: req.user.id
     })
 })
 
