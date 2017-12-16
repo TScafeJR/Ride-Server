@@ -106,10 +106,111 @@ var Car = sequelize.define( 'cars', {
     }
 })
 
-Car.belongsTo(User)
+var Trip = sequelize.define('trips', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    departure_street_number: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    departure_street: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    departure_city: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    departure_state: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    departure_zip_code: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    }, 
+    departure_latitude: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    destination_longitude: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    destination_street_number: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    destination_street: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    destination_city: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    destination_state: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    destination_zip_code: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    destination_latitude: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    destination_longitude: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    date: {
+        type: Sequelize.DATE,
+        allowNull: true 
+    },
+    departure_time: {
+        type: Sequelize.DATE,
+        allowNull: true 
+    },
+    num_seats: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    remaining_seats: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    }
+})
+
+var Seat = sequelize.define('seats', { 
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    cost: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    }
+})
+
+Car.belongsTo(User);
+Seat.belongsTo(Trip);
+Seat.belongsTo(User);
+User.hasMany(Trip, {as: 'TripsOn'});
+Trip.hasMany(Seat, {as: 'SeatsOwned'});
+
 
 module.exports = {
     sequelize,
     User,
-    Car
+    Car,
+    Trip,
+    Seat
 };
