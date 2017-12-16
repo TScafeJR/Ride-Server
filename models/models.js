@@ -134,11 +134,11 @@ var Trip = sequelize.define('trips', {
         allowNull: false
     }, 
     departure_latitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: true
     },
     destination_longitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: true
     },
     destination_street_number: {
@@ -162,18 +162,14 @@ var Trip = sequelize.define('trips', {
         allowNull: false
     },
     destination_latitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: true
     },
     destination_longitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: true
     },
     date: {
-        type: Sequelize.DATE,
-        allowNull: true 
-    },
-    departure_time: {
         type: Sequelize.DATE,
         allowNull: true 
     },
