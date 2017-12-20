@@ -406,6 +406,7 @@ app.get('/getUserFeed', (req,res) => {
   User.findAll({
     include: [{
       model: Trip,
+      as: 'TripsOn'
     }]
   }).then(response => {
     res.json(response);
