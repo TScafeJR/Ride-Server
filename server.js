@@ -192,6 +192,7 @@ app.post('/newTrip', (req, res) => {
         destination_zip_code: destinationZip,
         destination_latitude: destLat || null,
         destination_longitude: destLong || null,
+        trip_details: tripDetails || null,
         date: date,
         num_seats: seatCount,
         userId: req.user.id
