@@ -3,8 +3,7 @@
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(process.env.DATABASE_URI);
 
-sequelize
-.authenticate()
+sequelize.authenticate()
 .then(() => {
     console.log('Connection to your database has been established successfully.');
 })
@@ -137,7 +136,7 @@ var Trip = sequelize.define('trips', {
         type: Sequelize.DECIMAL,
         allowNull: true
     },
-    destination_longitude: {
+    departure_longitude: {
         type: Sequelize.DECIMAL,
         allowNull: true
     },
@@ -171,11 +170,11 @@ var Trip = sequelize.define('trips', {
     },
     date: {
         type: Sequelize.DATE,
-        allowNull: true 
+        allowNull: false 
     },
     num_seats: {
         type: Sequelize.INTEGER,
-        allowNull: true
+        allowNull: false
     },
     remaining_seats: {
         type: Sequelize.INTEGER,
@@ -193,7 +192,117 @@ var Seat = sequelize.define('seats', {
     cost: {
         type: Sequelize.INTEGER,
         allowNull: true
+    },
+    pickup_street_number: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    pickup_street: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    pickup_city: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    pickup_state: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    pickup_zip_code: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    }, 
+    pickup_latitude: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
+    },
+    pickup_longitude: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
+    },
+    dropoff_street_number: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    dropoff_street: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    dropoff_city: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    dropoff_state: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    dropoff_zip_code: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
+    dropoff_latitude: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
+    },
+    dropoff_longitude: {
+        type: Sequelize.DECIMAL,
+        allowNull: true
+    },
+})
+
+var Friend = sequelize.define('friends', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    user1ReqId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    user2ResId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
+})
+
+var Payment = sequelize.define('payments', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    stripeBrand: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    stripeCustomerId: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    stripeExpMonth: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    stripeExpYear: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    stripeLast4: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    stripeSource: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    status: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
 })
 
 Car.belongsTo(User);
@@ -201,6 +310,7 @@ Seat.belongsTo(Trip);
 Seat.belongsTo(User);
 User.hasMany(Trip, {as: 'TripsOn'});
 Trip.hasMany(Seat, {as: 'SeatsOwned'});
+Payment.belongsTo(User);
 
 
 module.exports = {
@@ -208,5 +318,7 @@ module.exports = {
     User,
     Car,
     Trip,
-    Seat
+    Seat,
+    Friend,
+    Payment
 };

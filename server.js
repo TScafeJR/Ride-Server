@@ -3,10 +3,17 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-var User = require('./models/models.js').User;
-var Car = require('./models/models.js').Car;
+var models = require('./models/models.js')
+var User = models.User;
+var Car = models.Car;
+var Trip = models.Trip;
+var Seat = models.Seat;
+var Friend = models.Friend;
+var Payment = models.Payment;
 var bcrypt = require('bcrypt');
 var axios = require('axios');
+import stripePackage from 'stripe';
+const stripe = stripePackage(process.env.STRIPE_SK);
 
 
 app.use(bodyParser.json());
@@ -168,6 +175,94 @@ If this file exceeds about 500 lines of code then I will segment it to make it m
 app.get('/', (req, res) => {
     return res.json({success: true})
 });
+
+app.post('/newTrip', (req, res) => {
+    Trip.create({
+        departure_street_number: deptStreetName || null,
+        departure_street: deptStreet || null,
+        departure_city: departureCity,
+        departure_state: departureState,
+        departure_zip_code: departureZip, 
+        departure_latitude: deptLati || null,
+        departure_longitude: deptLong || null,
+        destination_street_number: destStreetNum || null,
+        destination_street: destStreet || null, 
+        destination_city: destinationCity,
+        destination_state: destinationState,
+        destination_zip_code: destinationZip,
+        destination_latitude: destLat || null,
+        destination_longitude: destLong || null,
+        date: date,
+        num_seats: seatCount,
+        userId: req.user.id
+    })
+    .then((response) => {
+        console.log(`Your trip was successfully inserted into the database`)
+        res.json({success: true})
+    })
+    .catch((err)=>{
+        console.log(`There was an error inserting the trip into the database\n${err}`)
+        res.json({success: false})
+        
+    })
+})
+
+app.post('/newPassenger', (req, res) => {
+    Seat.create({
+        cost: cost,
+        tripId: tripId,
+        userId: req.user.id
+    })
+    .then((response) => {
+        console.log(`Your seat was successfully inserted into the database`)
+        res.json({success: true})
+    })
+    .catch((err)=>{
+        console.log(`There was an error inserting the seat into the database\n${err}`)
+        res.json({success: false})        
+    })
+})
+
+// app.post('/addFriend', (req, res) => {
+
+// })
+
+app.post('createFriendShip', (req, res) => {
+    if (req.body.confirm){
+        Friend.create({
+            user1ReqId: filler, //this is filler to the left 
+            user2ResId: req.id.user
+        })
+    }
+})
+
+/* Handle payment flow starts here */
+
+app.post('handleStripePayment', (req, res) => {
+    var token = req.body.stripeToken;
+
+    stripe.customers.create({
+        email: req.user.email,
+        source: token,
+      }).then(function(customer) {
+        // YOUR CODE: Save the customer ID and other info in a database for later.
+        return stripe.charges.create({
+          amount: 1000,
+          currency: "usd",
+          customer: customer.id,
+        });
+      }).then(function(charge) {
+        // Use and save the charge info.
+        console.log(`This is get's returned from the charge\n${charge}`)
+      })
+      .catch((error) => {
+          console.log(`There was an error creating and/or processing your payment\n${error}`)
+      })
+})
+
+/* Payment flow ends right here */
+
+/* Update routes are below here */
 
 app.post('/fbupdate', (req, res) => {
     User.update({
