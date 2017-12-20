@@ -12,7 +12,7 @@ var Friend = models.Friend;
 var Payment = models.Payment;
 var bcrypt = require('bcrypt');
 var axios = require('axios');
-import stripePackage from 'stripe';
+var stripePackage = require('stripe');
 const stripe = stripePackage(process.env.STRIPE_SK);
 
 
@@ -182,11 +182,11 @@ app.post('/newTrip', (req, res) => {
         departure_street: deptStreet || null,
         departure_city: departureCity,
         departure_state: departureState,
-        departure_zip_code: departureZip, 
+        departure_zip_code: departureZip,
         departure_latitude: deptLati || null,
         departure_longitude: deptLong || null,
         destination_street_number: destStreetNum || null,
-        destination_street: destStreet || null, 
+        destination_street: destStreet || null,
         destination_city: destinationCity,
         destination_state: destinationState,
         destination_zip_code: destinationZip,
@@ -203,7 +203,7 @@ app.post('/newTrip', (req, res) => {
     .catch((err)=>{
         console.log(`There was an error inserting the trip into the database\n${err}`)
         res.json({success: false})
-        
+
     })
 })
 
@@ -219,7 +219,7 @@ app.post('/newPassenger', (req, res) => {
     })
     .catch((err)=>{
         console.log(`There was an error inserting the seat into the database\n${err}`)
-        res.json({success: false})        
+        res.json({success: false})
     })
 })
 
@@ -230,7 +230,7 @@ app.post('/newPassenger', (req, res) => {
 app.post('createFriendShip', (req, res) => {
     if (req.body.confirm){
         Friend.create({
-            user1ReqId: filler, //this is filler to the left 
+            user1ReqId: filler, //this is filler to the left
             user2ResId: req.id.user
         })
     }
@@ -401,6 +401,10 @@ app.post('/carUpdate', (req, res) => {
         res.json({success: false})
     })
 })
+
+app.get('/getTrips', (req,res) => {
+  res.send('hello');
+});
 
 app.post('/profileUpdate', (req, res) => {
     var d = new Date();
