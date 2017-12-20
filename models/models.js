@@ -22,7 +22,7 @@ var User = sequelize.define( 'users', {
         type: Sequelize.STRING,
         allowNull: false,
         unique:  true
-    },   
+    },
     password: {
         type: Sequelize.STRING,
         allowNull: false
@@ -131,7 +131,7 @@ var Trip = sequelize.define('trips', {
     departure_zip_code: {
         type: Sequelize.TEXT,
         allowNull: false
-    }, 
+    },
     departure_latitude: {
         type: Sequelize.DECIMAL,
         allowNull: true
@@ -170,7 +170,7 @@ var Trip = sequelize.define('trips', {
     },
     date: {
         type: Sequelize.DATE,
-        allowNull: false 
+        allowNull: false
     },
     num_seats: {
         type: Sequelize.INTEGER,
@@ -179,10 +179,14 @@ var Trip = sequelize.define('trips', {
     remaining_seats: {
         type: Sequelize.INTEGER,
         allowNull: true
+    },
+    trip_details: {
+        type: Sequelize.TEXT,
+        allowNull: true
     }
 })
 
-var Seat = sequelize.define('seats', { 
+var Seat = sequelize.define('seats', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -212,7 +216,7 @@ var Seat = sequelize.define('seats', {
     pickup_zip_code: {
         type: Sequelize.TEXT,
         allowNull: false
-    }, 
+    },
     pickup_latitude: {
         type: Sequelize.DECIMAL,
         allowNull: true
