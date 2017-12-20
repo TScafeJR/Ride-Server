@@ -188,7 +188,10 @@ var Trip = sequelize.define('trips', {
         type: Sequelize.INTEGER,
         allowNull: true
     },
-
+    fun_trip_url: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    }
 })
 
 var Seat = sequelize.define('seats', {
@@ -315,6 +318,7 @@ var Payment = sequelize.define('payments', {
 })
 
 Car.belongsTo(User);
+Trip.belongsTo(User);
 Seat.belongsTo(Trip);
 Seat.belongsTo(User);
 User.hasMany(Trip, {as: 'TripsOn'});

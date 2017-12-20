@@ -177,34 +177,50 @@ app.get('/', (req, res) => {
 });
 
 app.post('/newTrip', (req, res) => {
-    Trip.create({
-        departure_street_number: req.body.deptStreetName || null,
-        departure_street: req.body.deptStreet || null,
-        departure_city: req.body.departureCity,
-        departure_state: req.body.departureState,
-        departure_zip_code: req.body.departureZip,
-        departure_latitude: req.body.deptLati || null,
-        departure_longitude: req.body.deptLong || null,
-        destination_street_number: req.body.destStreetNum || null,
-        destination_street: req.body.destStreet || null,
-        destination_city: req.body.destinationCity,
-        destination_state: req.body.destinationState,
-        destination_zip_code: req.body.destinationZip,
-        destination_latitude: req.body.destLat || null,
-        destination_longitude: req.body.destLong || null,
-        trip_details: req.body.tripDetails || null,
-        date: req.body.date,
-        num_seats: req.body.seatCount,
-        userId: req.user.id
+    console.log(req.body)
+    axios.post(`https://makemydrive.fun/`,{
+        origin: `${req.body.departureCity}, ${req.body.departureState}, USA`,
+        destination: `${req.body.destinationCity}, ${req.body.destinationState}, USA`
     })
-    .then((response) => {
-        console.log(`Your trip was successfully inserted into the database`)
-        res.json({success: true})
+    .then((response) =>{
+        return `https://makemydrive.fun${response.request.path}`
     })
-    .catch((err)=>{
-        console.log(`There was an error inserting the trip into the database\n${err}`)
-        res.json({success: false})
+    .then((resp) => {
+        console.log(`This is the full response: ${resp}`)
 
+        Trip.create({
+            departure_street_number: req.body.deptStreetName || null,
+            departure_street: req.body.deptStreet || null,
+            departure_city: req.body.departureCity,
+            departure_state: req.body.departureState,
+            departure_zip_code: req.body.departureZip,
+            departure_latitude: req.body.deptLati || null,
+            departure_longitude: req.body.deptLong || null,
+            destination_street_number: req.body.destStreetNum || null,
+            destination_street: req.body.destStreet || null,
+            destination_city: req.body.destinationCity,
+            destination_state: req.body.destinationState,
+            destination_zip_code: req.body.destinationZip,
+            destination_latitude: req.body.destLat || null,
+            destination_longitude: req.body.destLong || null,
+            trip_details: req.body.tripDetails || null,
+            date: req.body.date,
+            num_seats: req.body.seatCount,
+            remaining_seats: req.body.seatCount,
+            userId: req.user.id,
+            fun_trip_url: resp
+        })
+        .then((response) => {
+            console.log(`Your trip was successfully inserted into the database`)
+            res.json({success: true})
+        })
+        .catch((err)=>{
+            console.log(`There was an error inserting the trip into the database\n${err}`)
+            res.json({success: false})
+        })
+    })
+    .catch((error)=>{
+        console.log(`There was an error\n${error}`)
     })
 })
 
