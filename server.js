@@ -12,7 +12,7 @@ var Friend = models.Friend;
 var Payment = models.Payment;
 var bcrypt = require('bcrypt');
 var axios = require('axios');
-import stripePackage from 'stripe';
+const stripePackage = require('stripe');
 const stripe = stripePackage(process.env.STRIPE_SK);
 
 
