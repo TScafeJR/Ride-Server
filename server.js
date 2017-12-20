@@ -227,7 +227,23 @@ app.post('/newPassenger', (req, res) => {
 
 // })
 
-app.post('createFriendShip', (req, res) => {
+app.post('/funTrip', (req, res)=>{
+    axios.post(`https://makemydrive.fun/`,{
+        origin: req.body.origin,
+        destination: req.body.destination
+    })
+    .then((response) =>{
+        return `https://makemydrive.fun${response.request.path}`
+    })
+    .then((resp) => {
+        console.log(`This is the full response: ${resp}`)
+    })
+    .catch((error)=>{
+        console.log(`There was an error\n${error}`)
+    })
+})
+
+app.post('/createFriendShip', (req, res) => {
     if (req.body.confirm){
         Friend.create({
             user1ReqId: filler, //this is filler to the left 
@@ -238,7 +254,7 @@ app.post('createFriendShip', (req, res) => {
 
 /* Handle payment flow starts here */
 
-app.post('handleStripePayment', (req, res) => {
+app.post('/handleStripePayment', (req, res) => {
     var token = req.body.stripeToken;
 
     stripe.customers.create({
