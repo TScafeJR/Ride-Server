@@ -183,7 +183,12 @@ var Trip = sequelize.define('trips', {
     trip_details: {
         type: Sequelize.TEXT,
         allowNull: true
-    }
+    },
+    cost: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+
 })
 
 var Seat = sequelize.define('seats', {
