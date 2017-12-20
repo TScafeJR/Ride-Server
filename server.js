@@ -70,7 +70,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
     })
 }));
 
-    passport.use(new SpotifyStrategy({
+    // passport.use(new SpotifyStrategy({
         clientID: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         callbackURL: "https://the-app-ride.herokuapp.com/spotify-success"
