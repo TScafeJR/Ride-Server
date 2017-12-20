@@ -70,7 +70,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
     })
 }));
 
-    // passport.use(new SpotifyStrategy({
+    passport.use(new SpotifyStrategy({
         clientID: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         callbackURL: "https://the-app-ride.herokuapp.com/spotify-success"
@@ -402,8 +402,16 @@ app.post('/carUpdate', (req, res) => {
     })
 })
 
-app.get('/getTrips', (req,res) => {
-  res.send('hello');
+app.get('/getUserFeed', (req,res) => {
+  User.findAll({
+    include: {
+      model: 'Trip'
+    }
+  }).then(response => {
+    res.json(response);
+  }).catch(err => {
+    console.log("Error: ", err);
+  })
 });
 
 app.post('/profileUpdate', (req, res) => {
