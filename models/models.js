@@ -321,8 +321,8 @@ Car.belongsTo(User);
 Trip.belongsTo(User);
 Seat.belongsTo(Trip);
 Seat.belongsTo(User);
-User.hasMany(Trip, {as: 'TripsOn'});
-Trip.hasMany(Seat, {as: 'SeatsOwned'});
+User.hasMany(Trip, {as: 'trips'});
+Trip.hasMany(Seat, {as: 'seats'});
 Payment.belongsTo(User);
 
 
