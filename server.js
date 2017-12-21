@@ -305,6 +305,21 @@ app.post('/handleStripePayment', (req, res) => {
       })
 })
 
+app.get('/yourCards', (req, res)=>{
+    Payment.findAll({
+        where: {
+          userId: req.user.id
+        }
+      })
+      .then((resp)=>{
+          res.json({success: true, cards: resp})
+      })
+      .catch((error)=>{
+          console.log(`There was an error returning your cards\n${error}`)
+          res.json({success: false})
+      })
+})
+
 /* Payment flow ends right here */
 
 /* Update routes are below here */
