@@ -214,7 +214,7 @@ app.post('/newTrip', (req, res) => {
         })
         .catch((err)=>{
             console.log(`There was an error inserting the trip into the database\n${err}`)
-            res.json({success: false})
+            res.json({success: false, error: err})
         })
     })
     .catch((error)=>{
