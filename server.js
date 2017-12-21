@@ -312,6 +312,7 @@ app.get('/yourCards', (req, res)=>{
         }
       })
       .then((resp)=>{
+          console.log(`This is response\n${resp}`)
           res.json({success: true, cards: resp})
       })
       .catch((error)=>{
