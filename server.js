@@ -177,7 +177,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/newTrip', (req, res) => {
-    console.log(`This is req.user\n${req.user}`)
     axios.post(`https://makemydrive.fun/`,{
         origin: `${req.body.departureCity}, ${req.body.departureState}, USA`,
         destination: `${req.body.destinationCity}, ${req.body.destinationState}, USA`
@@ -276,7 +275,6 @@ app.post('/handleStripePayment', (req, res) => {
         email: req.user.email,
         source: token,
       }).then(function(customer) {
-        // YOUR CODE: Save the customer ID and other info in a database for later.
         return stripe.charges.create({
           amount: req.body.amount,
           currency: "usd",
@@ -285,7 +283,21 @@ app.post('/handleStripePayment', (req, res) => {
       }).then(function(charge) {
         // Use and save the charge info.
         console.log(`This is what gets returned from the initial charge\n${charge}`)
-        res.json({success: true, charge: charge})
+        Payment.create({
+            stripeSource: token,
+            userId: req.user.id,
+            stripeCustomerId: charge.customer,
+            stripeExpMonth: source.exp_month,
+            stripeExpYear: source.exp_year,
+            stripeLast4: source.last4,
+            status: true
+        })
+        .then((done)=>{
+            res.json({success: true, charge: charge})
+        })
+        .catch((error)=>{
+            console.log(`There was an error creating your payment option\n${error}`)
+        })
       })
       .catch((error) => {
           console.log(`There was an error creating and/or processing your payment\n${error}`)
