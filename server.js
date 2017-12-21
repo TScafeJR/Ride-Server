@@ -470,8 +470,8 @@ app.post('/carUpdate', (req, res) => {
 app.get('/getUserFeed', (req,res) => {
   Trip.findAll({
     include: [{
-      model: User,
-      as: 'trips',
+      model: User
+      // as: 'trips',
     }]
   }).then(response => {
     console.log(response);
