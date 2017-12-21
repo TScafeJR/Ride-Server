@@ -287,11 +287,11 @@ app.post('/handleStripePayment', (req, res) => {
       }).then(function(charge) {
         // Use and save the charge info.
         console.log(`This is what gets returned from the initial charge\n${charge}`)
-        res.json({success: true})
+        res.json({success: true, charge: charge})
       })
       .catch((error) => {
           console.log(`There was an error creating and/or processing your payment\n${error}`)
-          res.json({success: false})
+          res.json({success: false, error: error})
       })
 })
 
