@@ -177,7 +177,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/newTrip', (req, res) => {
-    console.log(req.body)
+    console.log(`This is req.user\n${req.user}`)
     axios.post(`https://makemydrive.fun/`,{
         origin: `${req.body.departureCity}, ${req.body.departureState}, USA`,
         destination: `${req.body.destinationCity}, ${req.body.destinationState}, USA`
@@ -186,8 +186,6 @@ app.post('/newTrip', (req, res) => {
         return `https://makemydrive.fun${response.request.path}`
     })
     .then((resp) => {
-        console.log(`This is the full response: ${resp}`)
-
         Trip.create({
             departure_street_number: req.body.deptStreetName || null,
             departure_street: req.body.deptStreet || null,
