@@ -315,6 +315,7 @@ app.get('/yourCards', (req, res)=>{
           return first
       })
       .then((resp)=>{
+          console.log(resp.toString())
           console.log(`This is response\n${resp}`)
           res.json({success: true, cards: resp})
       })
