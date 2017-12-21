@@ -311,6 +311,9 @@ app.get('/yourCards', (req, res)=>{
           userId: req.user.id
         }
       })
+      .then((first)=>{
+          return first
+      })
       .then((resp)=>{
           console.log(`This is response\n${resp}`)
           res.json({success: true, cards: resp})
