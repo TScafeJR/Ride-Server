@@ -287,9 +287,9 @@ app.post('/handleStripePayment', (req, res) => {
             stripeSource: token,
             userId: req.user.id,
             stripeCustomerId: charge.customer,
-            stripeExpMonth: source.exp_month,
-            stripeExpYear: source.exp_year,
-            stripeLast4: source.last4,
+            stripeExpMonth: charge.source.exp_month,
+            stripeExpYear: charge.source.exp_year,
+            stripeLast4: charge.source.last4,
             status: true
         })
         .then((done)=>{
