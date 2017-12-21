@@ -280,16 +280,18 @@ app.post('/handleStripePayment', (req, res) => {
       }).then(function(customer) {
         // YOUR CODE: Save the customer ID and other info in a database for later.
         return stripe.charges.create({
-          amount: 1000,
+          amount: req.body.amount,
           currency: "usd",
           customer: customer.id,
         });
       }).then(function(charge) {
         // Use and save the charge info.
-        console.log(`This is get's returned from the charge\n${charge}`)
+        console.log(`This is what gets returned from the initial charge\n${charge}`)
+        res.json({success: true})
       })
       .catch((error) => {
           console.log(`There was an error creating and/or processing your payment\n${error}`)
+          res.json({success: false})
       })
 })
 
