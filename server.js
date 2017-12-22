@@ -205,7 +205,8 @@ app.post('/newTrip', (req, res) => {
             num_seats: req.body.seatCount,
             remaining_seats: req.body.seatCount,
             userId: req.user.id,
-            fun_trip_url: resp
+            fun_trip_url: resp,
+            cost: req.body.seatCost
         })
         .then((response) => {
             console.log(`Your trip was successfully inserted into the database`)
@@ -241,7 +242,7 @@ app.get('/yourTrip', (req, res)=>{
 
 app.post('/newPassenger', (req, res) => {
     Seat.create({
-        cost: cost,
+        cost: req.body.cost,
         tripId: req.body.tripId,
         userId: req.user.id,
         pickup_city: req.body.pickupCity,
@@ -253,14 +254,14 @@ app.post('/newPassenger', (req, res) => {
     })
     .then((response) => {
         console.log(`Your seat was successfully inserted into the database`)
-        Trip.findOne({ where: { tripId: req.body.tripId }})
+        return Trip.findOne({ where: { id: req.body.tripId }})
     })
     .then((response) =>{
         if (response){
             Trip.update({
-                remaining_seats: req.body.image
+                remaining_seats: req.body.remaining_seats - 1
             }, {
-                where: { tripId: req.body.tripId },
+                where: { id: req.body.tripId },
                 returning: true,
                 plain: true
             })
@@ -462,7 +463,6 @@ app.post('/carPhotoUpdate', (req, res)=>{
 app.post('/carUpdate', (req, res) => {
     Car.findOne({ where: { userId: req.user.id }})
     .then((response) =>{
-        console.log(`This is the test response\n${response}`)
         if (response){
             Car.update({
                 license_plate: req.body.licensePlate,
@@ -511,10 +511,8 @@ app.get('/getUserFeed', (req,res) => {
   Trip.findAll({
     include: [{
       model: User
-      // as: 'trips',
     }]
   }).then(response => {
-    console.log(response);
     res.json(response);
   }).catch(err => {
     console.log("Error: ", err);
