@@ -221,15 +221,52 @@ app.post('/newTrip', (req, res) => {
     })
 })
 
+app.get('/yourTrip', (req, res)=>{
+    Trip.findAll({
+        where: {
+          tripId: req.body.tripId
+        }
+      })
+      .then((first)=>{
+          return first
+      })
+      .then((resp)=>{
+          res.json({success: true, tripInfo: resp})
+      })
+      .catch((error)=>{
+          console.log(`There was an error returning your cards\n${error}`)
+          res.json({success: false})
+      })
+})
+
 app.post('/newPassenger', (req, res) => {
     Seat.create({
         cost: cost,
-        tripId: tripId,
-        userId: req.user.id
+        tripId: req.body.tripId,
+        userId: req.user.id,
+        pickup_city: req.body.pickupCity,
+        pickup_state: req.body.pickupState,
+        pickup_zip_code: req.body.pickupZipCode,
+        dropoff_city: req.body.dropoffCity,
+        dropoff_state: req.body.dropoffState,
+        dropoff_zip_code: req.body.dropoffZipCode,
     })
     .then((response) => {
         console.log(`Your seat was successfully inserted into the database`)
-        res.json({success: true})
+        Trip.findOne({ where: { tripId: req.body.tripId }})
+    .then((response) =>{
+        if (response){
+            Trip.update({
+                remaining_seats: req.body.image
+            }, {
+                where: { tripId: req.body.tripId },
+                returning: true,
+                plain: true
+            })
+            .then((response)=>{
+                console.log(`Car photo updated`)
+            })
+        // res.json({success: true})
     })
     .catch((err)=>{
         console.log(`There was an error inserting the seat into the database\n${err}`)
@@ -315,8 +352,6 @@ app.get('/yourCards', (req, res)=>{
           return first
       })
       .then((resp)=>{
-          console.log(resp.toString())
-          console.log(`This is response\n${resp}`)
           res.json({success: true, cards: resp})
       })
       .catch((error)=>{

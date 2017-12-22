@@ -191,7 +191,10 @@ var Trip = sequelize.define('trips', {
     fun_trip_url: {
         type: Sequelize.TEXT,
         allowNull: true
-    }
+    },
+    // likes: {
+    //     type
+    // }
 })
 
 var Seat = sequelize.define('seats', {
