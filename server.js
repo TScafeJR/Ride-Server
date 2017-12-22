@@ -254,6 +254,7 @@ app.post('/newPassenger', (req, res) => {
     .then((response) => {
         console.log(`Your seat was successfully inserted into the database`)
         Trip.findOne({ where: { tripId: req.body.tripId }})
+    })
     .then((response) =>{
         if (response){
             Trip.update({
@@ -265,8 +266,12 @@ app.post('/newPassenger', (req, res) => {
             })
             .then((response)=>{
                 console.log(`Car photo updated`)
+                res.json({success: true})
             })
-        // res.json({success: true})
+            .catch((error)=>{
+                console.log(`There was an error\n${error}`)
+            })   
+        }
     })
     .catch((err)=>{
         console.log(`There was an error inserting the seat into the database\n${err}`)
