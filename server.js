@@ -575,7 +575,8 @@ app.get('/profile', (req, res) => {
         birthday: req.user.birthday,
         hometown: req.user.hometown,
         bio: req.user.bio,
-        id: req.user.id
+        id: req.user.id,
+        username: req.user.username
     })
 })
 
